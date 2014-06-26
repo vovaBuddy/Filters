@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @length.name %>
+</p>
+
+<p>
+  <strong>Dress:</strong>
+  <%= @length.dress %>
+</p>
+
+<%= link_to 'Edit', edit_length_path(@length) %> |
+<%= link_to 'Back', lengths_path %>

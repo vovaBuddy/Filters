@@ -1,0 +1,8 @@
+.thumbnails
+	- unless dresses.nil?
+		- dresses.each do |dress|
+			.dress-container
+				%img{src: dress.image}
+				.caption
+					%p= dress.name
+					%p=  dress.price

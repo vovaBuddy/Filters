@@ -1,0 +1,27 @@
+<h1>Listing dress_types</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Dress</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @dress_types.each do |dress_type| %>
+      <tr>
+        <td><%= dress_type.name %></td>
+        <td><%= dress_type.dress %></td>
+        <td><%= link_to 'Show', dress_type %></td>
+        <td><%= link_to 'Edit', edit_dress_type_path(dress_type) %></td>
+        <td><%= link_to 'Destroy', dress_type, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Dress type', new_dress_type_path %>

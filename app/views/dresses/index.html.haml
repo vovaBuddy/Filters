@@ -1,0 +1,126 @@
+:javascript
+  left_br = 0;
+
+  brand = new Array();
+  length = new Array();
+  color = new Array();
+  type = new Array();
+
+  price = [0,50000];
+
+  function ChangeTags(array)
+  {
+    array.forEach(function(entry) {
+        html += '<span class="label label-info" style="margin:5px">'+entry+'</span>'
+    });
+  }
+
+  function LoadRequest()
+  {
+    $( "#dresses" ).load("/load_content", {left: left_br, brand: brand, price: price, length: length, type: type, color: color});
+
+    html = ""
+
+    ChangeTags(brand)
+
+    ChangeTags(length)
+
+    ChangeTags(color)
+
+    ChangeTags(type)
+
+    $("#tags").html(html);
+  }
+
+
+
+  function SetEvent(type, array)
+  {
+
+    $('.'+type+'_check').click(function() {
+      index = array.indexOf($(this).data(type + '-name'));
+
+      if (index == -1)
+      {
+        array.push($(this).data(type + '-name'))
+      }
+      else
+      {
+        array.splice(index, 1);
+      }
+
+      left_br = 0; 
+
+      LoadRequest()
+
+    });
+
+  }
+
+  $(window).scroll(function() {
+    if($(window).scrollTop() == $(document).height() - $(window).height()) {
+      left_br += 28;
+      $( "#dresses" ).append($("<div>").load("/load_content", {left: left_br, brand: brand, price: price, length: length, type: type, color: color}));
+    }
+  });
+
+  SetEvent("brand", brand);
+
+  SetEvent("length", length);
+
+  SetEvent("color", color);
+
+  SetEvent("type", type);
+
+
+
+  $('.price_from').change(function() {
+    price[0] = $(this).val();
+    left_br = 0;
+    LoadRequest()
+  });
+
+  $('.price_to').change(function() {
+    price[1] = $(this).val();
+    left_br = 0;
+    LoadRequest()
+  });
+
+
+
+- model_class = Dress
+.page-header
+  %h1= t '.title', :default => model_class.model_name.human.pluralize.titleize
+#tags
+#dresses
+  =render  "product_list", dresses: @dresses.first(28)
+
+
+
+/ %table.table.table-striped
+/   %thead
+/     %tr
+/       %th= model_class.human_attribute_name(:id)
+/       %th= model_class.human_attribute_name(:name)
+/       %th= model_class.human_attribute_name(:brand)
+/       %th= model_class.human_attribute_name(:image)
+/       %th= model_class.human_attribute_name(:price)
+/       %th= model_class.human_attribute_name(:type)
+/       %th= model_class.human_attribute_name(:color)
+/       %th= model_class.human_attribute_name(:length)
+/       %th= t '.actions', :default => t("helpers.actions")
+/   %tbody
+/     - @dresses.first(50).each do |dress|
+/       %tr
+/         %td= link_to dress.id, dress_path(dress)
+/         %td= dress.name
+/         %td= dress.brand
+/         %td= image_tag dress.image, class: "img-rounded"
+/         %td= dress.price
+/         %td= dress.type
+/         %td= dress.color
+/         %td= dress.length
+/         %td
+/           = link_to t('.edit', :default => t("helpers.links.edit")), edit_dress_path(dress), :class => 'btn btn-mini'    
+/           = link_to t('.destroy', :default => t("helpers.links.destroy")), dress_path(dress), :method => :delete, :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }, :class => 'btn btn-mini btn-danger' 
+/ = link_to t('.new', :default => t("helpers.links.new")), new_dress_path, :class => 'btn btn-primary'                            |
